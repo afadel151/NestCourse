@@ -3,13 +3,14 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { AuthDto } from "./dto";
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { JwtService } from "@nestjs/jwt";
 @Injectable()
 
 
 export class AuthService {
-    constructor(private prisma: PrismaService) {
+    constructor(private prisma: PrismaService, private jwtService: JwtService) {
 
-    }
+    }   
     async signup(dto: AuthDto) {
         try {
             // generate the password hash 
@@ -55,9 +56,9 @@ export class AuthService {
         if (!valid) {
             throw new ForbiddenException('Invalid credentials');
         }
-        const { password, ...result } = user;
-            // return the saved user 
-        return result;
+        return  {
+            access_token : await this.jwtService.signAsync({ sub: user.id,email: user.email })
+        };
     }
 
 }
