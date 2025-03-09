@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [ConfigModule,UsersModule, PrismaModule, JwtModule.register({
     secret: new ConfigService().get<string>('JWT_SECRET'),
      global: true,
-     signOptions: { expiresIn: '60s' }
+     signOptions: { expiresIn: '600s' }
   })],
   controllers: [AuthController],
   providers: [AuthService],
