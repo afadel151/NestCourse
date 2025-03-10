@@ -21,13 +21,9 @@ export class AuthService {
                     email: dto.email,
                     password: hash,
                 },
-                // select:{
-                //     id: true,
-                //     email: true,
-                // }
+               
             });
             const { password, ...result } = user;
-            // return the saved user 
             return result;
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {
