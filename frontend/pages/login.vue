@@ -55,15 +55,32 @@
 </template>
 
 <script setup lang="ts">
-
+const jwt_token = useState<string>('jwt_token')
+const { $api } = useNuxtApp()
 import { useRoute } from 'vue-router';
 import { Motion } from 'motion-v';
+import { AuthDto } from '~/dtos/auth.dto';
 
 const route = useRoute();
-const isLogin = computed(() => route.path === '/login');
-const form = ref({ email: '', password: '' });
+const isLogin = ref(true);
+const form = ref<AuthDto>({ email: '', password: '' });
+interface LoginResponse {
+    access_token: string;
+}
 
-const handleSubmit = () => {
-    
+const handleSubmit = async () => {
+    if (isLogin.value) {
+        try {
+            let response = await $api<LoginResponse>('auth/login', {
+                method: 'POST',
+                body: JSON.stringify(form.value)
+            });
+            jwt_token.value = response.access_token;
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        console.log('Signing up', form.value);
+    }
 };
 </script>
