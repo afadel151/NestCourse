@@ -20,8 +20,8 @@ export class AuthService {
                 data: {
                     email: dto.email,
                     password: hash,
+                    role: 'CLIENT', // or any default role you want to assign
                 },
-               
             });
             const { password, ...result } = user;
             return result;
@@ -48,6 +48,9 @@ export class AuthService {
             throw new ForbiddenException('Invalid credentials');
         }
         // check the password
+        if (!user.password) {
+            throw new ForbiddenException('Invalid credentials'); // that the user has signed with Oauth2.0
+        }
         const valid = await argon.verify(user.password, dto.password);
         if (!valid) {
             throw new ForbiddenException('Invalid credentials');

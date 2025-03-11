@@ -1,3 +1,4 @@
+import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -7,10 +8,12 @@ async function bootstrap() {
     whitelist: true,
   }));
   app.enableCors({
-    origin: '*', // Allow all origins (change this in production)
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
-});
-  await app.listen(process.env.PORT ?? 3333,"0.0.0.0");
+    origin: 'http://localhost:3000', // Replace with your Nuxt frontend URL
+    credentials: true, // ✅ Allows cookies to be sent and received
+    allowedHeaders: ['Content-Type', 'Authorization'], // ✅ Allow Authorization header
+    exposedHeaders: ['Authorization'], // ✅ Expose Authorization header in responses
+  });
+  app.use(cookieParser());
+  await app.listen(process.env.PORT ?? 3333, "0.0.0.0");
 }
 bootstrap();

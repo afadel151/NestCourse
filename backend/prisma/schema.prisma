@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,32 +8,114 @@ datasource db {
 }
 
 model User {
-  id        Int            @id @default(autoincrement())
-  email     String         @unique
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String? // Nullable for OAuth users
   firstName String?
   lastName  String?
-  password  String
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  bookmarks UserBookmark[]
-}
-
-model Bookmark {
-  id        Int      @id @default(autoincrement())
+  role      Role
+  bio       String?
+  skills    String[] // Array of skills
+  avatar    String? // Profile picture URL
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  title       String
-  link        String
-  description String?
-  users       UserBookmark[]
+  // Relations
+  jobs             Job[]         @relation("ClientJobs") // Jobs posted by the client
+  applications     Application[] // Applications made by freelancers
+  reviewsGiven     Review[]      @relation("ClientReviews") // Reviews client gave
+  reviewsReceived  Review[]      @relation("FreelancerReviews") // Reviews freelancer received
+  paymentsMade     Payment[]     @relation("ClientPayments") // Payments client made
+  paymentsReceived Payment[]     @relation("FreelancerPayments") // Payments freelancer received
+  Job              Job[]
+
+  @@map("users")
 }
 
-model UserBookmark {
-  userId     Int
-  bookmarkId Int
-  user       User     @relation(fields: [userId], references: [id])
-  bookmark   Bookmark @relation(fields: [bookmarkId], references: [id])
+enum Role {
+  CLIENT
+  FREELANCER
+  ADMIN
+}
 
-  @@id([userId, bookmarkId])
+model Job {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  budget      Float
+  status      JobStatus @default(OPEN)
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  clientId          String
+  client            User          @relation("ClientJobs", fields: [clientId], references: [id])
+  applications      Application[]
+  hiredFreelancerId String?
+  hiredFreelancer   User?         @relation(fields: [hiredFreelancerId], references: [id])
+  reviews           Review[]
+  payments          Payment[]
+
+  @@map("jobs")
+}
+
+enum JobStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model Application {
+  id           String            @id @default(uuid())
+  freelancerId String
+  freelancer   User              @relation(fields: [freelancerId], references: [id])
+  jobId        String
+  job          Job               @relation(fields: [jobId], references: [id])
+  coverLetter  String?
+  status       ApplicationStatus @default(PENDING)
+  createdAt    DateTime          @default(now())
+
+  @@map("applications")
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Payment {
+  id           String        @id @default(uuid())
+  amount       Float
+  status       PaymentStatus @default(PENDING)
+  jobId        String
+  job          Job           @relation(fields: [jobId], references: [id])
+  freelancerId String
+  freelancer   User          @relation("FreelancerPayments", fields: [freelancerId], references: [id])
+  clientId     String
+  client       User          @relation("ClientPayments", fields: [clientId], references: [id])
+  createdAt    DateTime      @default(now())
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  REFUNDED
+}
+
+model Review {
+  id           String   @id @default(uuid())
+  rating       Int
+  comment      String?
+  jobId        String
+  job          Job      @relation(fields: [jobId], references: [id])
+  freelancerId String
+  freelancer   User     @relation("FreelancerReviews", fields: [freelancerId], references: [id])
+  clientId     String
+  client       User     @relation("ClientReviews", fields: [clientId], references: [id])
+  createdAt    DateTime @default(now())
+
+  @@map("reviews")
 }
