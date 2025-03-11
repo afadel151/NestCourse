@@ -6,6 +6,10 @@ import { AuthGuard } from './auth.guard';
 
 export class AuthController {
     constructor(private authService: AuthService) { }
+    @Get('/')
+    index(){
+        return 'This is the auth page';
+    }
     @Post('signup')
     signup(@Body() dto: AuthDto) {
         return this.authService.signup(dto);
