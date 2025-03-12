@@ -32,7 +32,7 @@ async function fetchUserJobs() {
 
 async function fetchUserApplications() {
     try {
-        const response = await $api<ApplicationDto[]>('/users/applications', { method: 'GET' });
+        const response = await $api<ApplicationDto[]>('/applications/user', { method: 'GET' });
         applications.value = response || [];
     } catch (error) {
         console.error('Error fetching applications:', error);
