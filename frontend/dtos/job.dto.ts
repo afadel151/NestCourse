@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsEnum, IsRFC3339, IsArray, IsObject } from "class-validator";
+import { IsNotEmpty, IsString, IsNumber, IsEnum, IsRFC3339, IsArray, IsObject, IsOptional } from "class-validator";
 import type { UserDto } from "./user.dto";
 import type { ApplicationDto } from "./application.dto";
 import type { ReviewDto } from "./review.dto";
@@ -25,16 +25,17 @@ export class JobDto {
     description!: string;
 
     @IsNumber()
-    budget!: number;
+    @IsOptional()
+    budget!: number ;
 
     @IsEnum(JobStatus)
-    status!: JobStatus;
+    status!: JobStatus | null;
 
     @IsRFC3339()
-    createdAt!: string;
+    createdAt!: string | null;
 
     @IsString()
-    clientId!: string;
+    clientId!: string | null;
 
 
     @IsObject()

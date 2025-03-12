@@ -2,7 +2,7 @@ import { IsNotEmpty, IsString, IsEnum, IsRFC3339, IsObject, IsOptional } from "c
 import type { JobDto } from "./job.dto";
 import type { UserDto } from "./user.dto";
 
-enum ApplicationStatus {
+export enum ApplicationStatus {
     PENDING = "PENDING",
     ACCEPTED = "ACCEPTED",
     REJECTED = "REJECTED"

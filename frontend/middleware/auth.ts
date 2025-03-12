@@ -1,7 +1,12 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-    const token = useCookie("jwt_token");
-
-    if (!token.value) {
-        return navigateTo("/login"); // Redirect if no token
+export default defineNuxtRouteMiddleware(async (to, from) => {
+    const authStore = useAuthStore();
+    if (!authStore.user) {
+        
+    }
+    if(!authStore.authenticated){
+        await authStore.checkUserAuthentication();
+    }
+    if (!authStore.authenticated && to.path !== "/login") {
+        return navigateTo("/login");
     }
 });

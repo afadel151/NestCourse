@@ -1,13 +1,13 @@
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'auth'
+    middleware: 'freelancer'
   })
 
- const token = useCookie("jwt_token");
+
 </script>
 
 <template>
     <div>
-        {{ token }}
+        hello
     </div>
 </template>

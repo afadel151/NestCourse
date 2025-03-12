@@ -6,12 +6,7 @@ import { z } from 'zod'
 import { UserDto } from '~/dtos/user.dto';
 
 const { $api } = useNuxtApp();
-const profileSchema = z.object({
-    firstName: z.string().min(2, 'First name must be at least 2 characters'),
-    lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-    bio: z.string().optional(),
-    skills: z.array(z.string())
-})
+
 const router = useRouter();
 const fetchedUser = ref<UserDto>({
     firstName: '',
@@ -43,7 +38,6 @@ async function getUserDetails() {
                 applications: response.applications || [],
                 reviewsReceived: response.reviewsReceived || [],
             };
-            console.log(response);
 
         } else {
             router.push('/login');
@@ -57,7 +51,6 @@ onMounted(() => {
 })
 
 const form = computed(() => fetchedUser.value);
-console.log(form.value);
 
 const skillInput = ref('')
 const isSubmitting = ref(false)

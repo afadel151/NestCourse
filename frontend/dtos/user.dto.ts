@@ -3,10 +3,10 @@ import { IsAlphanumeric, IsArray, IsEmail, IsEnum, IsNotEmpty, IsRFC3339, IsStri
 import type { ApplicationDto } from "./application.dto";
 import type { ReviewDto } from "./review.dto";
 import type { JobDto } from "./job.dto";
-enum UserRole {
-    USER = "USER",
+export enum UserRole {
+    CLIENT = "CLIENT",
     ADMIN = "ADMIN",
-    BLOGGER = "BLOGGER"
+    FREELANCER = "FREELANCER"
 }
 
 export class UserDto {

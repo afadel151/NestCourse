@@ -57,8 +57,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+    layout:false
+})
 import { useForm } from 'vee-validate'
-
 
 import { storeToRefs } from "pinia";
 import { Motion } from 'motion-v';
@@ -70,12 +72,20 @@ const { isFieldDirty, handleSubmit } = useForm({
 const isLogin = ref(true);
 const form = ref<AuthDto>({ email: '', password: '' });
 const router = useRouter();
-const { authenticateUser } = useAuthStore(); // use auth store
-const { authenticated } = storeToRefs(useAuthStore()); // make authenticated state 
+const authStore = useAuthStore();
+
+onMounted(()=>{
+    if (!authStore.user) {
+        authStore.checkUserAuthentication();
+    }
+    if (authStore.authenticated) {
+        router.push('/user/profile')
+    }
+})
 const onSubmit = handleSubmit(async (values) => {
-    await authenticateUser(form.value);
-    if (authenticated.value) {
-        router.push('/test');
+    await authStore.authenticateUser(form.value);
+    if (authStore.authenticated) {
+        router.push('/user/profile');
     } else {
         console.log('error');
     }
