@@ -24,4 +24,18 @@ export class UsersService {
         let { id,password, ...fetchedUser} = userRecord;
         return fetchedUser;
     }
+    async getUserDetails(user: any){
+        const userRecord = await this.prismaService.user.findUnique({
+            where: {    
+                email: user.email,
+            }
+        });
+
+        if (!userRecord) {
+            throw new Error('User not found');
+        }
+
+        let { id,password,skills,bio,avatar,createdAt,updatedAt, ...fetchedUser} = userRecord;
+        return fetchedUser;
+    }
 }

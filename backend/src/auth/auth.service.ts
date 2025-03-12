@@ -23,7 +23,7 @@ export class AuthService {
                     role: 'CLIENT', // or any default role you want to assign
                 },
             });
-            const { password, ...result } = user;
+            const {id, password, ...result } = user;
             return result;
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {
@@ -55,7 +55,13 @@ export class AuthService {
             throw new ForbiddenException('Invalid credentials');
         }
         return  {
-            access_token : await this.jwtService.signAsync({ sub: user.id,email: user.email })
+            access_token : await this.jwtService.signAsync({ sub: user.id,email: user.email }),
+            user : {
+                firstName: user.firstName,
+                lastName : user.lastName,
+                email: user.email,
+                role: user.role
+            }
         };
     }
 

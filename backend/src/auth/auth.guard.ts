@@ -12,11 +12,11 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): Promise<boolean> {
     console.log('Guard...');
-    
     const request = context.switchToHttp().getRequest();
-    console.log(request.headers);
     const token = this.extractTokenFromHeader(request);
     if (!token) {
+      console.log('no token');
+      
       throw new UnauthorizedException();
     }
     try {
@@ -28,12 +28,12 @@ export class AuthGuard implements CanActivate {
       );
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
-      request['user'] = payload;
-      console.log(request.user);
-      
+      request['user'] = payload;      
     } catch {
       throw new UnauthorizedException();
     }
+    console.log('Active');
+    
     return true;
   }
   private extractTokenFromHeader(request: Request): string | undefined {
