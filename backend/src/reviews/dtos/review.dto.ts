@@ -1,11 +1,40 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsInt, IsRFC3339, IsObject } from "class-validator";
+import type { JobDto } from "../../jobs/dtos/job.dto";
+import type { UserDto } from "../../users/dtos/user.dto";
 
 export class ReviewDto {
-    @IsEmail()
+    @IsString()
     @IsNotEmpty()
-    email: string;
+    id!: string;
+
+    @IsInt()
+    rating!: number;
+
+    @IsString()
+    comment!: string | null;
 
     @IsString()
     @IsNotEmpty()
-    password: string;
+    jobId!: string;
+
+    @IsObject()
+    job!: JobDto  | null;
+
+
+    @IsString()
+    @IsNotEmpty()
+    freelancerId!: string;
+
+    @IsObject()
+    freelancer!: UserDto  | null ;
+
+    @IsString()
+    @IsNotEmpty()
+    clientId!: string;
+
+    @IsObject()
+    client!: UserDto  | null;
+
+    @IsRFC3339()
+    createdAt!: string;
 }

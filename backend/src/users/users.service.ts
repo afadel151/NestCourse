@@ -10,6 +10,11 @@ export class UsersService {
             where: {    
                 email: user.email,
             },
+            include: {
+                jobs: true,
+                applications: true, // Include user's applications
+                reviewsReceived: true, // Include user's received reviews
+            },
         });
 
         if (!userRecord) {

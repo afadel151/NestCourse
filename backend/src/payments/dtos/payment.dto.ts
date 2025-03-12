@@ -1,11 +1,45 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsNumber, IsEnum, IsRFC3339, IsObject } from "class-validator";
+import type { UserDto } from "../../users/dtos/user.dto";
+import type { JobDto } from "../../jobs/dtos/job.dto";
+
+enum PaymentStatus {
+    PENDING = "PENDING",
+    COMPLETED = "COMPLETED",
+    REFUNDED = "REFUNDED"
+}
 
 export class PaymentDto {
-    @IsEmail()
+    @IsString()
     @IsNotEmpty()
-    email: string;
+    id!: string;
+
+    @IsNumber()
+    amount!: number;
+
+    @IsEnum(PaymentStatus)
+    status!: PaymentStatus;
 
     @IsString()
     @IsNotEmpty()
-    password: string;
+    jobId!: string;
+
+    @IsObject()
+    job!: JobDto | null;
+
+    @IsString()
+    @IsNotEmpty()
+    freelancerId!: string;
+
+    @IsObject()
+    freelancer!: UserDto | null;
+
+    @IsString()
+    @IsNotEmpty()
+    clientId!: string;
+
+    @IsObject()
+    client!: UserDto | null;
+
+    @IsRFC3339()
+    createdAt!: string;
 }
