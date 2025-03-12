@@ -1,13 +1,21 @@
 
-import { IsEmail, isEnum, IsNotEmpty, IsRFC3339, IsString } from "class-validator";
+import { IsAlphanumeric, IsArray, IsEmail, IsEnum, IsNotEmpty, IsRFC3339, IsString } from "class-validator";
+import type { ApplicationDto } from "./application.dto";
+import type { ReviewDto } from "./review.dto";
+import type { JobDto } from "./job.dto";
+enum UserRole {
+    USER = "USER",
+    ADMIN = "ADMIN",
+    BLOGGER = "BLOGGER"
+}
 
-export class AuthDto {
+export class UserDto {
     @IsEmail()
     @IsNotEmpty()
     email!: string;
 
     @IsString()
-    avatar!: string;
+    avatar!: string | null;
 
     @IsString()
     bio!: string;
@@ -15,14 +23,30 @@ export class AuthDto {
     @IsRFC3339()
     createdAt!: string;
 
+    @IsRFC3339()
+    updatedAt!: string;
+
     @IsString()
     firstName!: string;
 
     @IsString()
     lastName!: string;
 
-    @IsString()
     @IsNotEmpty()
-    role!: string;
-    
+    @IsEnum(UserRole)
+    role!: string ;
+
+
+    @IsArray()
+    skills!: string[] ;
+
+    @IsArray()
+    applications!: ApplicationDto[]  | null ;
+
+    @IsArray()
+    reviewsReceived!: ReviewDto[]  | null ;
+
+    @IsArray()
+    jobs!: JobDto[]  | null ;
+
 }
