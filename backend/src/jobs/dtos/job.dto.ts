@@ -45,7 +45,7 @@ export class JobDto {
 
 
     @IsObject()
-    freelancer!: UserDto | null;
+    hiredFreelancer!: UserDto | null;
 
     @IsArray()
     applications!: ApplicationDto[] | null;
