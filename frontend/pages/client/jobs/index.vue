@@ -5,10 +5,9 @@ onMounted(() => {
 });
 import { ref, onMounted } from 'vue'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-import { LampDesk, Loader2Icon } from 'lucide-vue-next'
+import { ChevronRight, ChevronsRight, LampDesk, Loader2Icon } from 'lucide-vue-next'
 import { useNuxtApp } from '#app'
 import { JobDto } from '~/dtos/job.dto'
-import type { ApplicationDto } from '~/dtos/application.dto'
 import { useForm } from 'vee-validate';
 
 const isLoading = ref(true);
@@ -31,6 +30,7 @@ async function AddNewJob() {
         
     }
 }
+
 async function fetchUserJobs() {
     try {
         const response = await $api<JobDto[]>('/jobs/user', {
@@ -117,7 +117,12 @@ const { isFieldDirty, handleSubmit } = useForm({
             </Card>
             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Card v-for="job in jobs" :key="job.id">
-                    <CardHeader>
+                    <CardHeader class="relative">
+                        <NuxtLink :href="`/client/jobs/${job.id}`" class="absolute top-5 right-5">
+                            <Button size="sm" variant="secondary">
+                                <ChevronsRight />
+                            </Button>
+                        </NuxtLink>
                         <CardTitle>{{ job.title }}</CardTitle>
                         <CardDescription>{{ job.description }}</CardDescription>
                     </CardHeader>
