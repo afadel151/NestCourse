@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "nuxt-auth-utils",
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    "@nuxt/fonts"
   ],
   
   shadcn: {

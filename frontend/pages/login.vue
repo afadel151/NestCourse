@@ -62,7 +62,6 @@ definePageMeta({
 })
 import { useForm } from 'vee-validate'
 
-import { storeToRefs } from "pinia";
 import { Motion } from 'motion-v';
 import { AuthDto } from '~/dtos/auth.dto';
 import { useAuthStore } from "~/stores/auth";
@@ -74,7 +73,7 @@ const form = ref<AuthDto>({ email: '', password: '' });
 const router = useRouter();
 const authStore = useAuthStore();
 
-onMounted(()=>{
+onBeforeMount(()=>{
     if (!authStore.user) {
         authStore.checkUserAuthentication();
     }

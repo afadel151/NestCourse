@@ -4,7 +4,7 @@ import type { ApplicationDto } from "./application.dto";
 import type { ReviewDto } from "./review.dto";
 import type { PaymentDto } from "./payment.dto";
 
-enum JobStatus {
+export enum JobStatus {
     OPEN = "OPEN",
     IN_PROGRESS = "IN_PROGRESS",
     COMPLETED = "COMPLETED",
@@ -12,6 +12,22 @@ enum JobStatus {
 }
 
 export class JobDto {
+    constructor();
+    constructor(Job: JobDto);
+    constructor(Job?: JobDto) {
+        if (Job) {
+            this.title = Job.title;
+            this.description = Job.description;
+            this.budget = Job.budget;
+            this.status = JobStatus.OPEN;
+        } else {
+            this.status = JobStatus.OPEN; // Ensure the default value is set
+        }
+
+        
+    }
+
+    
     @IsString()
     @IsNotEmpty()
     id!: string;
@@ -26,10 +42,10 @@ export class JobDto {
 
     @IsNumber()
     @IsOptional()
-    budget!: number ;
+    budget!: number;
 
     @IsEnum(JobStatus)
-    status!: JobStatus | null;
+    status!: JobStatus ;
 
     @IsRFC3339()
     createdAt!: string | null;

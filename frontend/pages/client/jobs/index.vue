@@ -7,7 +7,7 @@ import { ref, onMounted } from 'vue'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { ChevronRight, ChevronsRight, LampDesk, Loader2Icon } from 'lucide-vue-next'
 import { useNuxtApp } from '#app'
-import { JobDto } from '~/dtos/job.dto'
+import { JobDto, JobStatus } from '~/dtos/job.dto'
 import { useForm } from 'vee-validate';
 
 const isLoading = ref(true);
@@ -124,10 +124,10 @@ const { isFieldDirty, handleSubmit } = useForm({
                             </Button>
                         </NuxtLink>
                         <CardTitle>{{ job.title }}</CardTitle>
-                        <CardDescription>{{ job.description }}</CardDescription>
+                        <CardDescription class="mt-2 pr-12"> {{ job.description }}</CardDescription>
                     </CardHeader>
                     <CardContent class="space-x-2">
-                        <Badge :variant="job.status == 'OPEN' ? 'success' : 'default'">{{ job.status }}</Badge>
+                        <Badge  :variant="job?.status === JobStatus.OPEN ? 'success'  :  job?.status === JobStatus.IN_PROGRESS ? 'info'  : 'default'">{{ job?.status.toLocaleLowerCase().replace('_',' ') }}</Badge>
                         <Badge variant="secondary">{{ job.applications?.length }} applications</Badge>
                         <Badge variant="secondary">{{ job.reviews?.length }} reviews</Badge>
                     </CardContent>

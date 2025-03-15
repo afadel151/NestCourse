@@ -2,9 +2,11 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useNuxtApp } from '#app';
 
-import { Edit, Loader2Icon, Trash } from 'lucide-vue-next';
+import { Loader2Icon, Trash } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
-import { JobDto } from '~/dtos/job.dto';
+import { JobDto, JobStatus } from '~/dtos/job.dto';
+import JobEdit from '~/components/me/JobEdit.vue';
+import { ApplicationStatus } from '~/dtos/application.dto';
 
 const route = useRoute();
 const job = ref<JobDto | null>(null);
@@ -20,6 +22,7 @@ async function getJob() {
             }
         });
         job.value = response;
+
     } catch (error) {
         console.error('Error fetching job:', error);
     } finally {
@@ -30,11 +33,14 @@ async function getJob() {
 onMounted(() => {
     getJob();
 });
+function alterJob(newJob: JobDto) {
+    job.value = newJob;
+}
 </script>
 
 <template>
     <div class="p-8  flex justify-center">
-        <div class="w-full max-w-3xl bg-gray-100 shadow-lg rounded-xl p-6">
+        <div class="w-full max-w-3xl border rounded-xl p-6">
             <template v-if="isLoading">
                 <div class="flex justify-center items-center">
                     <Loader2Icon class="h-6 w-6 animate-spin text-gray-500" />
@@ -42,34 +48,37 @@ onMounted(() => {
             </template>
 
             <template v-else-if="job">
+                <h4 class="text-slate-500">title</h4>
                 <div class="w-full  flex justify-between">
+                    
                     <h1 class="text-3xl font-bold mb-4">{{ job?.title }}</h1>
                     <div class="flex space-x-2 ">
-                        <Button size="sm"  variant="outline">
-                            <Edit />
-                        </Button>
-                        <Button  size="sm"  variant="destructive">
+
+                        <JobEdit
+                            :job="job" :job_edited="alterJob(job)" />
+                        <Button size="sm" variant="destructive">
                             <Trash />
                         </Button>
                     </div>
                 </div>
-                <p class="text-gray-600">{{ job?.description }}</p>
+                <h4 class="text-slate-500 mt-2">description</h4>
+                <p class="text-gray-600 mt-1">{{ job?.description }}</p>
 
-                <div class="mt-4 space-x-2">
-                    <Badge :variant="job?.status === 'OPEN' ? 'success' : 'default'">{{ job?.status }}</Badge>
+                <div class="mt-6 space-x-2">
+                    <Badge :variant="job?.status === JobStatus.OPEN ? 'success'  :  job?.status === JobStatus.IN_PROGRESS ? 'info'  : 'default'">{{ job?.status.toLocaleLowerCase().replace('_',' ') }}</Badge>
                     <Badge variant="secondary">Budget: ${{ job?.budget }}</Badge>
                 </div>
 
                 <div class="mt-6">
-                    <h2 class="text-xl font-semibold">Applications</h2>
-                    <div v-if="job?.applications && job.applications.length > 0" class="mt-2 space-y-4">
+                    <h2 class="text-xl  font-semibold">Applications</h2>
+                    <div v-if="job?.applications && job.applications.length > 0" class="mt-4  space-y-4">
                         <div v-for="app in job?.applications" :key="app.freelancer?.email"
-                            class="p-4 border bg-white rounded-lg">
+                            class="p-4 border bg-slate-50 rounded-lg">
                             <p class="font-semibold">{{ app.freelancer?.firstName }} {{ app.freelancer?.lastName }}</p>
                             <p class="text-sm text-gray-600">{{ app.freelancer?.email }}</p>
                             <p class="mt-2 mb-2">{{ app.coverLetter }}</p>
                             <Badge
-                                :variant="app.status === 'PENDING' ? 'destructive' : app.status === 'ACCEPTED' ? 'success' : 'default'">
+                                :variant="app.status === ApplicationStatus.PENDING ? 'destructive' : app.status === ApplicationStatus.ACCEPTED ? 'success' : 'default'">
                                 {{ app.status }}
                             </Badge>
                         </div>
@@ -82,7 +91,7 @@ onMounted(() => {
                     <h2 class="text-xl font-semibold">Hired Freelancer</h2>
                     <div v-if="job.hiredFreelancer" class="p-4 border rounded-lg">
                         <p class="font-semibold">{{ job?.hiredFreelancer.firstName }} {{ job?.hiredFreelancer.lastName
-                        }}</p>
+                            }}</p>
                         <p class="text-sm text-gray-600">{{ job?.hiredFreelancer.email }}</p>
                     </div>
                     <p v-else class="text-gray-500">No freelancer hired yet.</p>
