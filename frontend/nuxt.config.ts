@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "nuxt-auth-utils",
     '@pinia/nuxt',
-    "@nuxt/fonts"
+    "@nuxt/fonts",
+    "@nuxt/icon"
   ],
   
   shadcn: {

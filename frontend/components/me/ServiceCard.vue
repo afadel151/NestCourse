@@ -1,6 +1,6 @@
 <template>
-    <div class="service-card p-4 border rounded-lg shadow-md">
-        <h3 class="text-xl font-bold mb-2">{{ title }}</h3>
+    <div class="service-card p-6 border rounded-lg shadow-lg transition-transform transform hover:scale-105">
+        <h3 class="text-2xl font-bold mb-4">{{ title }}</h3>
         <p class="text-base font-light">{{ description }}</p>
     </div>
 </template>
