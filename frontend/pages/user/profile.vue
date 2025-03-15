@@ -4,8 +4,10 @@ import { PencilIcon, XIcon, Loader2Icon } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
 import { UserDto } from '~/dtos/user.dto';
+import { useAuthStore } from '~/stores/auth';
 
 const { $api } = useNuxtApp();
+const authStore = useAuthStore();
 
 const router = useRouter();
 const fetchedUser = ref<UserDto>({
@@ -79,12 +81,48 @@ const removeSkill = (skillToRemove: string) => {
 
 // Form submission
 const onSubmit = handleSubmit(async (values) => {
-    try {   
+    try {
+        isSubmitting.value = true;
+        await $api('/users/profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values)
+        });
+        alert('Profile updated successfully');
     } catch (error) {
+        console.log(error);
     } finally {
+        isSubmitting.value = false;
     }
 })
+
+// Logout function
+const logout = () => {
+    authStore.logUserOut();
+    router.push('/login');
+}
+
+// Delete account function
+const deleteAccount = async () => {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        try {
+            await $api('/users/profile', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            authStore.logUserOut();
+            router.push('/signup');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 </script>
+
 <template>
     <div class="flex min-h-screen w-full">
         <div class="w-full flex flex-col p-8">
@@ -206,9 +244,13 @@ const onSubmit = handleSubmit(async (values) => {
                         </CardHeader>
                     </Card>
                 </div>
+
+                <!-- Logout and Delete Account Buttons -->
+                <div class="flex justify-between mt-8">
+                    <Button variant="outline" @click="logout">Logout</Button>
+                    <Button variant="destructive" @click="deleteAccount">Delete Account</Button>
+                </div>
             </Motion>
         </div>
-
-
     </div>
 </template>

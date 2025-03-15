@@ -43,12 +43,9 @@
                 </form>
 
                 <div class="text-sm text-center dark:text-neutral-300">
-                    {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
-                    <NuxtLink :to="isLogin ? '/signup' : '/login'" class="text-primary font-medium">
-                        {{ isLogin ? 'Sign up' : 'Log in' }}
-                    </NuxtLink>
-                    <NuxtLink :to="'/test'" class="text-primary font-medium">
-                        test
+                    Or create a new account
+                    <NuxtLink href="/signup" class="text-primary font-medium">
+                        Sign up
                     </NuxtLink>
                 </div>
             </Motion>

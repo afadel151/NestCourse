@@ -71,13 +71,14 @@ export const useAuthStore = defineStore("auth", {
                 router.push('/login')
             }
         },
-        async signUpUser({ email, password }: AuthDto) {
-            const {data}: any = await useFetch<LoginResponse>("http://localhost:3333/auth/login", {
+        async signUpUser({ email, password,role }: AuthDto) {
+            const {data}: any = await useFetch<LoginResponse>("http://localhost:3333/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: {
                     email,
                     password,
+                    role
                 }
             }).catch((err) => {
                 console.log(err);
