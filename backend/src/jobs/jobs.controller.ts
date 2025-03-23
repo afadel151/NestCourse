@@ -2,7 +2,6 @@ import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nest
 import { JobsService } from './jobs.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/decorators/user.decorator';
-import { JobDto } from './dtos/job.dto';
 import { Job } from 'src/decorators/job.decorator';
 import { UUID } from 'crypto';
 
@@ -19,7 +18,7 @@ export class JobsController {
     @Post('add')
     addJobOffer(@Job() dto: any,@User() user : any)
     {
-        console.log(dto,user);
+
         
         return this.jobService.addJobOffer(dto,user);
     }
@@ -29,4 +28,11 @@ export class JobsController {
     {   
         return this.jobService.getMyJob(job_id,user)
     }
+
+    @Post('edit')
+    editJobOffer(@Job() dto: any,@User() user : any)
+    {
+        return this.jobService.editJobOffer(dto,user);
+    }
+    
 }

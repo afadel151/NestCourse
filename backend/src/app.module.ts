@@ -8,15 +8,15 @@ import { JobsModule } from './jobs/jobs.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ReviewsModule } from './reviews/reviews.module';
-import { AuthController } from './auth/auth.controller';
+import { UsersController } from './users/users.controller';
 
 
 @Module({
   imports: [AuthModule, ConfigModule.forRoot({ isGlobal: true}), PrismaModule, UsersModule,  JobsModule, ApplicationsModule, PaymentsModule, ReviewsModule],
 
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes(AuthController);
-  }
+export class AppModule  {
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer.apply(LoggerMiddleware).forRoutes(UsersController);
+  // }
  }

@@ -14,7 +14,7 @@ enum JobStatus {
 export class JobDto {
     @IsString()
     @IsNotEmpty()
-    id!: string | null;
+    id!: string;
 
     @IsString()
     @IsNotEmpty()
@@ -28,7 +28,7 @@ export class JobDto {
     budget!: number;
 
     @IsEnum(JobStatus)
-    status!: JobStatus | null;
+    status!: JobStatus;
 
     @IsRFC3339()
     createdAt!: string | null;
