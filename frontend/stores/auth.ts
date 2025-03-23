@@ -24,13 +24,14 @@ export const useAuthStore = defineStore("auth", {
         user: null
     }),
     actions: {
-        async authenticateUser({ email, password }: AuthDto) {
+        async authenticateUser({ email, password, role }: AuthDto) {
             const {data}: any = await useFetch<LoginResponse>("http://localhost:3333/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: {
                     email,
                     password,
+                    role
                 }
             }).catch((err) => {
                 console.log(err);

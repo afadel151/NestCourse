@@ -69,7 +69,7 @@ const { isFieldDirty, handleSubmit } = useForm({
                                 Create a new job offer and wait for freelanders !.
                             </DialogDescription>
                         </DialogHeader>
-                        <form @submit="AddNewJob" class="space-y-4 ">
+                        <form @submit.prevent="AddNewJob" class="space-y-4 ">
                             <FormField v-slot="{ componentField }" name="email">
                                 <FormItem>
                                     <FormLabel>Job title</FormLabel>

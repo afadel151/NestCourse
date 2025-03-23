@@ -66,7 +66,7 @@ const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: new AuthDto(),
 })
 const isLogin = ref(true);
-const form = ref<AuthDto>({ email: '', password: '' });
+const form = ref<AuthDto>({ email: '', password: '', role : 'CLIENT' });
 const router = useRouter();
 const authStore = useAuthStore();
 

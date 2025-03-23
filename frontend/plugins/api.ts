@@ -2,18 +2,16 @@ export default defineNuxtPlugin((nuxtApp) => {
   const token = useCookie("jwt_token"); // Retrieve token from cookies
 
   const api = $fetch.create({
-    baseURL: "http://127.0.0.1:3333",
+    baseURL: "http://localhost:3333",
     credentials: "include",
 
     async onRequest({ options }) {
       if (!options.headers) {
         options.headers = new Headers();
       }
-
       if (!(options.headers instanceof Headers)) {
         options.headers = new Headers(options.headers);
       }
-
       if (token.value) {
         options.headers.set("Authorization", `Bearer ${token.value}`);
       }
