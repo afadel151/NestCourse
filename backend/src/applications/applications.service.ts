@@ -31,4 +31,38 @@ export class ApplicationsService {
         }
         return Applications;
     }
+    async getRecentApplications(user: any) {
+        const Applications = await this.prismaService.application.findMany({
+            where:{
+                job:{
+                    clientId: user.sub
+                }
+            },
+            select: {
+                coverLetter: true,
+                status: true,
+                createdAt: true,
+                job: {
+                    select: {
+                        title: true,
+                        description: true,
+                        budget: true,
+                        status: true,
+                    }
+                },
+                freelancer:{
+                    select:{
+                        email:true,
+                        firstName:true,
+                        lastName:true,
+                    }
+                }
+                
+            }
+        });
+        if (!Applications) {
+            throw new Error('No applications found');
+        }
+        return Applications;
+    }
 }

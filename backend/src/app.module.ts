@@ -13,7 +13,7 @@ import { UsersController } from './users/users.controller';
 
 @Module({
   imports: [AuthModule, ConfigModule.forRoot({ isGlobal: true}), PrismaModule, UsersModule,  JobsModule, ApplicationsModule, PaymentsModule, ReviewsModule],
-
+  
 })
 export class AppModule  {
   // configure(consumer: MiddlewareConsumer) {

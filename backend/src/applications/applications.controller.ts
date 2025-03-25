@@ -10,4 +10,9 @@ export class ApplicationsController {
     getUserApplications(@User() user: any) {
         return this.applicationService.getUserApplications(user);
     }
+
+    @Get('recent')
+    getRecentApplications(@User() user: any) {
+        return this.applicationService.getRecentApplications(user);
+    }
 }
