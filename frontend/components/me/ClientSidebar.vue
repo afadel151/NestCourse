@@ -11,7 +11,7 @@ onMounted(async () => {
 });
 
 const items = [
-    { title: "Home", url: "#", icon: Home },
+    { title: "Home", url: "/client/home", icon: Home },
     { title: "Jobs", url: "/client/jobs", icon: LampDesk },
     { title: "Calendar", url: "#", icon: Calendar },
     { title: "Search", url: "#", icon: Search },
