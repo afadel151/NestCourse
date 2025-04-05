@@ -39,11 +39,8 @@ export class AuthService {
             }
             throw error;
         }
-
     }
-
     async signin(dto: AuthDto) {
-        // find the user 
         console.log(dto);
         
         const user = await this.prisma.user.findUnique({
@@ -54,7 +51,6 @@ export class AuthService {
         if (!user) {
             throw new ForbiddenException('Invalid credentials');
         }
-        // check the password
         if (!user.password) {
             throw new ForbiddenException('Invalid credentials'); // that the user has signed with Oauth2.0
         }
@@ -72,5 +68,4 @@ export class AuthService {
             }
         };
     }
-
 }

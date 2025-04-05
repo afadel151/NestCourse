@@ -1,0 +1,85 @@
+# These are the necessary federation and connector directives you will be using
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.10", import: ["@key"])
+  @link(
+    url: "https://specs.apollo.dev/connect/v0.1"
+    import: ["@connect", "@source"]
+  )
+  # A @source directive defines a shared data source for multiple connectors.
+  @source(
+    name: "ecomm"
+    http: { baseURL: "https://ecommerce.demo-api.apollo.dev/" }
+  )
+
+
+type Review {
+  id: ID!
+  rating: Float
+  comment: String
+}
+
+type Variant {
+  id: ID!
+  name: String
+}
+
+type Product @key(fields: "id") {
+  # The @key directive defines the primary key for the Product type.
+  # The fields argument specifies the fields that make up the key.
+  # The @external directive indicates that the field is defined in another service.
+  # The @requires directive specifies that the field requires additional fields to be resolved.
+  # The @provides directive indicates that the field provides additional fields to be resolved.
+  # The @shareable directive indicates that the field can be shared with other services.
+  # The @tag directive indicates that the field is a tag for the Product type.
+  id: ID!
+  name: String
+  description: String
+  variants: [Variant]
+  reviews: [Review]
+    # A @connect directive defines the API data source of a GraphQL schema field.
+    @connect(
+      source: "ecomm"
+      http: { GET: "/products/{$this.id}/reviews" }
+      selection: """
+      $.reviews {
+        id
+        rating
+        comment
+      }
+      """
+    )
+  
+}
+
+
+type Query {
+  products: [Product]
+    # A @connect directive defines the API data source of a GraphQL schema field.
+    @connect(
+      source: "ecomm"
+      http: { GET: "/products" }
+      selection: """
+      $.products {
+        id
+        name
+        description
+      }
+      """
+    )
+  product(id: ID!): Product
+    # A @connect directive defines the API data source of a GraphQL schema field.
+    @connect(
+      source: "ecomm"
+      http: { GET: "/products/{$args.id}" }
+      selection: """
+          id
+          name
+          description
+          variants {
+            id: variantId
+            name
+          }
+      """
+      entity: true
+    )
+}
