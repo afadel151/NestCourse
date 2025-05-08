@@ -1,14 +1,13 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {  Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JobDto } from './dtos/job.dto';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { UUID } from 'crypto';
-import { Job } from 'src/decorators/job.decorator';
+
 import { JobStatus } from '@prisma/client';
+import { AlgoliaService } from './algolia.service';
 
 @Injectable()
 export class JobsService {
-    constructor(private prismaService: PrismaService) { }
+    constructor(private prismaService: PrismaService,private algolia : AlgoliaService) { }
     getStatus(status: string) {
         return JobStatus[status as keyof typeof JobStatus];
     }
@@ -63,6 +62,17 @@ export class JobsService {
                     clientId: user.sub,
                 },
             });
+            try {
+                const result = await this.algolia.saveObject({
+                    id: Job.id,
+                    title: dto.title,
+                    description: dto.description,
+                    budget: dto.budget
+                })
+                console.log(result);
+            } catch (error) {
+                throw error
+            }
             const { id, ...createdJob } = Job;
             return createdJob;
         } catch (error) {

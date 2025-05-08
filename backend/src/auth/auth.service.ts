@@ -14,7 +14,7 @@ export class AuthService {
     }   
     async signup(dto: AuthDto) {
         try {
-            const hash = await argon.hash('12345');
+            const hash = await argon.hash(dto.password);
             const user = await this.prisma.user.create({
                 data: {
                     email: dto.email,
@@ -32,6 +32,8 @@ export class AuthService {
                 }
             };
         } catch (error) {
+            console.log(dto);
+            
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code === 'P2002') {
                     throw new ForbiddenException('Email already exists');
@@ -41,13 +43,14 @@ export class AuthService {
         }
     }
     async signin(dto: AuthDto) {
-        console.log(dto);
         
         const user = await this.prisma.user.findUnique({
             where: {
                 email: dto.email,
             },
         });
+        console.log(user);
+        
         if (!user) {
             throw new ForbiddenException('Invalid credentials');
         }
@@ -55,9 +58,15 @@ export class AuthService {
             throw new ForbiddenException('Invalid credentials'); // that the user has signed with Oauth2.0
         }
         const valid = await argon.verify(user.password, dto.password);
+        console.log(valid);
+        
         if (!valid) {
+            console.log('invalid');
+            
             throw new ForbiddenException('Invalid credentials');
         }
+        console.log(user);
+        
         return  {
             access_token : await this.jwtService.signAsync({ sub: user.id,email: user.email }),
             user : {

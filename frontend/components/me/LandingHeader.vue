@@ -84,9 +84,12 @@
             <Button variant="ghost">
                 Become a Seller
             </Button>
-            <Button variant="ghost">
-                Sign in
-            </Button>
+            <NuxtLink href="/signup">
+
+                <Button variant="ghost" >
+                    Sign in
+                </Button>
+            </NuxtLink>
             <Button variant="secondary" @click="login">
                 Log in
             </Button>
@@ -101,7 +104,6 @@ const emit = defineEmits(['login'])
 function login() {
     emit('login')
 }
-
 
 
 </script>

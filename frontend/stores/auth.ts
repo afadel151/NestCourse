@@ -84,6 +84,8 @@ export const useAuthStore = defineStore("auth", {
             }).catch((err) => {
                 console.log(err);
             });
+            console.log(data.value);
+            
             const access_token = data.value.access_token;
             
             if (!access_token) {

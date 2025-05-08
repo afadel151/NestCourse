@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ["client"]
+})
 const { $api } = useNuxtApp();
 onMounted(() => {
     fetchUserJobs();

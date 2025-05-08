@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   db:
     image: postgres:9.6
@@ -12,10 +11,10 @@ services:
     ports:
       - "5433:5432"
     networks:
-      - freecodecamp
+      - backend-network
 
 networks:
-  freecodecamp:
+  backend-network:
     driver: bridge
 volumes:
   pgdata:

@@ -3,7 +3,6 @@ import type { UserDto } from "../../users/dtos/user.dto";
 import type { ApplicationDto } from "../../applications/dtos/application.dto";
 import type { ReviewDto } from "../../reviews/dtos/review.dto";
 import type { PaymentDto } from "../../payments/dtos/payment.dto";
-
 enum JobStatus {
     OPEN = "OPEN",
     IN_PROGRESS = "IN_PROGRESS",

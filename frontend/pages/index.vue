@@ -24,7 +24,7 @@
                 </div>
             </Motion>
         </div>
-        <ParticlesBg class="absolute inset-0" :quantity="100" :ease="100" :color="isDark ? '#FFF' : '#000'"
+        <ParticlesBg class="absolute inset-0" :quantity="100" :ease="100" color="#000"
             :staticity="10" refresh />
         <div class="w-screen  px-60 mt-20">
             <p class="text-center text-3xl md:text-5xl font-bold">Our Services</p>
@@ -113,11 +113,9 @@
 </template>
 
 <script setup lang="ts">
-
 definePageMeta({
     layout: false,
 })
-
 import { computed } from "vue";
 import { useColorMode } from "@vueuse/core";
 import { Motion } from "motion-v";
@@ -125,19 +123,21 @@ import LandingHeader from "~/components/me/LandingHeader.vue";
 import ServiceCard from "~/components/me/ServiceCard.vue";
 import { ORBIT_DIRECTION } from "~/components/ui/orbit";
 import Orbit from "~/components/ui/orbit/Orbit.vue";
-const isDark = computed(() => useColorMode().value == "dark");
 function login() {
     const router = useRouter();
     const authStore = useAuthStore();
     if (!authStore.user) {
         authStore.checkUserAuthentication();
     }
+    
     if (authStore.authenticated) {
-        router.push('/user/profile')
+        if (authStore.user?.role == "CLIENT") {
+            router.push('/client/profile')
+        }else{
+            router.push('/user/prorile')
+        }
     } else {
         router.push('/login')
     }
 }
-
-
 </script>

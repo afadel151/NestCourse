@@ -20,7 +20,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
+
   jobs             Job[]         @relation("ClientJobs") // Jobs posted by the client
   applications     Application[] // Applications made by freelancers
   reviewsGiven     Review[]      @relation("ClientReviews") // Reviews client gave

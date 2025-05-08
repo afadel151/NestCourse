@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ["client"]
+})
 import { ref, onMounted } from 'vue';
 import { useRoute, useNuxtApp } from '#app';
 
