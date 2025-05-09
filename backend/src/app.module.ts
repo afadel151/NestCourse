@@ -3,16 +3,15 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
-import { LoggerMiddleware } from './logger/logger.middleware';
-import { JobsModule } from './jobs/jobs.module';
-import { ApplicationsModule } from './applications/applications.module';
+import { JobsModule } from './work/work.module';
 import { PaymentsModule } from './payments/payments.module';
-import { ReviewsModule } from './reviews/reviews.module';
-import { UsersController } from './users/users.controller';
+import { FeedbackModule } from './feedback/feedback.module';
+import { BillingModule } from './billing/billing.module';
+import { CoreModule } from './core/core.module';
 
 
 @Module({
-  imports: [AuthModule, ConfigModule.forRoot({ isGlobal: true}), PrismaModule, UsersModule,  JobsModule, ApplicationsModule, PaymentsModule, ReviewsModule],
+  imports: [AuthModule, ConfigModule.forRoot({ isGlobal: true}), PrismaModule, UsersModule,  JobsModule, PaymentsModule, FeedbackModule, FeedbackModule, BillingModule, CoreModule],
   
 })
 export class AppModule  {

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsNumber, IsEnum, IsRFC3339, IsObject } from "class-validator";
-import type { UserDto } from "../../users/dtos/user.dto";
-import type { JobDto } from "../../jobs/dtos/job.dto";
+import type { UserDto } from "./user.dto";
+import { JobDto } from "./job.dto";
 
 enum PaymentStatus {
     PENDING = "PENDING",

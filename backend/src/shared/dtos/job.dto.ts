@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsString, IsNumber, IsEnum, IsRFC3339, IsArray, IsObject } from "class-validator";
-import type { UserDto } from "../../users/dtos/user.dto";
-import type { ApplicationDto } from "../../applications/dtos/application.dto";
-import type { ReviewDto } from "../../reviews/dtos/review.dto";
-import type { PaymentDto } from "../../payments/dtos/payment.dto";
+import type { UserDto } from "../../shared/dtos/user.dto";
+import type { ApplicationDto } from "./application.dto";
+import type { ReviewDto } from "../../shared/dtos/review.dto";
+import type { PaymentDto } from "../../shared/dtos/payment.dto";
 enum JobStatus {
     OPEN = "OPEN",
     IN_PROGRESS = "IN_PROGRESS",

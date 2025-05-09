@@ -1,8 +1,9 @@
 
 import { IsAlphanumeric, IsArray, IsEmail, IsEnum, IsNotEmpty, IsRFC3339, IsString } from "class-validator";
-import type { ApplicationDto } from "../../applications/dtos/application.dto";
-import type { ReviewDto } from "../../reviews/dtos/review.dto";
-import type { JobDto } from "../../jobs/dtos/job.dto";
+
+import type { ReviewDto } from "./review.dto";
+import { JobDto } from "./job.dto";
+import { ApplicationDto } from "./application.dto";
 enum UserRole {
     USER = "USER",
     ADMIN = "ADMIN",
@@ -49,4 +50,20 @@ export class UserDto {
     @IsArray()
     jobs!: JobDto[]  | null ;
 
+}
+export class updateDto {
+    @IsString()
+    avatar!: string | null;
+
+    @IsString()
+    bio!: string;
+
+    @IsString()
+    firstName!: string;
+
+    @IsString()
+    lastName!: string;
+
+    @IsArray()
+    skills!: string[] ;
 }

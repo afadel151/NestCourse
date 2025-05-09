@@ -1,6 +1,7 @@
 
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { JobDto } from 'src/jobs/dtos/job.dto';
+import { JobDto } from 'src/shared/dtos/job.dto';
+
 
 export const Job = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) : JobDto  => {

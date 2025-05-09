@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsEnum, IsRFC3339, IsObject, IsOptional } from "class-validator";
-import type { JobDto } from "../../jobs/dtos/job.dto";
-import type { UserDto } from "../../users/dtos/user.dto";
+import type { JobDto } from "./job.dto";
+import type { UserDto } from "../../shared/dtos/user.dto";
 
 enum ApplicationStatus {
     PENDING = "PENDING",

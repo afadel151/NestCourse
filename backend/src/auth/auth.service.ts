@@ -1,10 +1,10 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { AuthDto } from "./dto";
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService } from "@nestjs/jwt";
 import { Role } from "@prisma/client";
+import { AuthDto } from "src/shared/dtos/auth.dto";
 @Injectable()
 
 
@@ -66,7 +66,6 @@ export class AuthService {
             throw new ForbiddenException('Invalid credentials');
         }
         console.log(user);
-        
         return  {
             access_token : await this.jwtService.signAsync({ sub: user.id,email: user.email }),
             user : {
@@ -76,5 +75,8 @@ export class AuthService {
                 role: user.role
             }
         };
+    }
+    async deleteAccount(dto: AuthDto){
+
     }
 }
