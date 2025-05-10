@@ -9,6 +9,14 @@ export class AuthDto {
     @IsNotEmpty()
     password: string;
 
+    @IsString()
+    @IsNotEmpty()
+    firstName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    lastName: string;
+    
     @IsEnum(['CLIENT', 'FREELANCER'])
     role?: string;
 }

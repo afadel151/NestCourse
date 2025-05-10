@@ -9,7 +9,24 @@ enum UserRole {
     ADMIN = "ADMIN",
     BLOGGER = "BLOGGER"
 }
+enum ExperienceLevel {
+    JUNIOR = "JUNIOR",
+    MID = "MID",
+    SENIOR = "SENIOR"
+}
+export class FreelancerDto {
+    @IsString()
+    title!: string | null;
 
+    @IsArray()
+    skills!: string[];
+
+    @IsEnum(ExperienceLevel)
+    experieneLevel!: string;
+    
+    @IsArray()
+    applications!: ApplicationDto[]  | null ;
+}
 export class UserDto {
     @IsEmail()
     @IsNotEmpty()
@@ -33,16 +50,10 @@ export class UserDto {
     @IsString()
     lastName!: string;
 
-    @IsNotEmpty()
-    @IsEnum(UserRole)
-    role!: string ;
+    @IsString()
+    categories!: string;
 
 
-    @IsArray()
-    skills!: string[] ;
-
-    @IsArray()
-    applications!: ApplicationDto[]  | null ;
 
     @IsArray()
     reviewsReceived!: ReviewDto[]  | null ;
@@ -51,6 +62,7 @@ export class UserDto {
     jobs!: JobDto[]  | null ;
 
 }
+
 export class updateDto {
     @IsString()
     avatar!: string | null;
@@ -64,6 +76,4 @@ export class updateDto {
     @IsString()
     lastName!: string;
 
-    @IsArray()
-    skills!: string[] ;
 }

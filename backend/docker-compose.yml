@@ -1,67 +1,18 @@
 services:
-  api:
-    build: .
-    container_name: jobboard-api
-    ports:
-      - "3000:3000"
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgres://postgres:123@db:5433/nest
-      REDIS_URL: redis://redis:6379
-      RABBITMQ_URL: amqp://rabbitmq:5672
-      ALGOLIA_API_KEY: "PC78REUNTB"
-      ALGOLIA_API_SECRET: "b538936dd86458ee2bf7da4a8bb2d24a"
-    healthcheck:                       # API health endpoint (optional)
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 30s
-      retries: 3
-    networks:
-      - backend-net
   db:
     image: postgres:9.6
     container_name: jobboard-db
     volumes:
-      - pgdata:/var/lib/postgresql/data 
+      - pgdata:/var/lib/postgresql/data
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: nest
     ports:
-      - "5433:5432"
-    healthcheck:                       # Postgres readiness probe :contentReference[oaicite:4]{index=4}
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      retries: 5
+      - "5433:5432"    
     networks:
       - backend-net
-  redis:
-    image: redis:7-alpine
-    container_name: jobboard-redis
-    networks:
-      - backend-net
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      retries: 5
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: jobboard-rabbitmq
-    networks:
-      - backend-net
-    ports:
-      - "5672:5672"       # AMQP
-      - "15672:15672"     # Management UI
-    healthcheck:
-      test: ["CMD‑SHELL", "rabbitmq-diagnostics ping"]
-      interval: 10s
-      retries: 5
 networks:
   backend-net:
     driver: bridge

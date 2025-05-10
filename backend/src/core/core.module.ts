@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AlgoliaService } from './algolia.service';
 import { PrismaService } from './prisma.service';
+import { RedisService } from './redis.service';
 
 @Module({
-    exports:[AlgoliaService,PrismaService]
+    providers:[AlgoliaService,PrismaService,RedisService],
+    exports:[AlgoliaService,PrismaService,RedisService]
 })
 export class CoreModule {}

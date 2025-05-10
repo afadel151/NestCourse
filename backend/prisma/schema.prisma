@@ -15,21 +15,72 @@ model User {
   lastName  String?
   role      Role
   bio       String?
-  skills    String[] // Array of skills
   avatar    String? // Profile picture URL
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
 
-  jobs             Job[]         @relation("ClientJobs") // Jobs posted by the client
+  // Freelancer-Specific Fields
+  title             String? // Developer, Designer, etc.
   applications     Application[] // Applications made by freelancers
-  reviewsGiven     Review[]      @relation("ClientReviews") // Reviews client gave
+  skills            String[] // ["Vue.js", "Laravel", "Figma"]
+  experienceLevel   Experience? // JUNIOR, MID, SENIOR
+  categories        String[] // ["Web Development", "UI/UX"]
+  projectPreference ProjectType? // SHORT_TERM, LONG_TERM
+  languages         Language[] // List of language proficiencies
+  linkedAccounts    LinkedAccount[] // GitHub, LinkedIn, etc.
   reviewsReceived  Review[]      @relation("FreelancerReviews") // Reviews freelancer received
-  paymentsMade     Payment[]     @relation("ClientPayments") // Payments client made
   paymentsReceived Payment[]     @relation("FreelancerPayments") // Payments freelancer received
-  Job              Job[]
+
+  // In User model (CLIENT)
+  jobs             Job[]         @relation("ClientJobs") // Jobs posted by the client
+  reviewsGiven     Review[]      @relation("ClientReviews") // Reviews client gave
+  paymentsMade     Payment[]     @relation("ClientPayments") // Payments client made
+  companyName    String?
+  companyWebsite String?
+  companyBio     String?
+  verified       Boolean        @default(false)
+
+
+  Job            Job[]
 
   @@map("users")
+  SentMessage Message[] @relation("SenderMessages")
+  ReceivedMessage Message[] @relation("ReceiverMessages")
+  Report Report[]
+  Bookmark Bookmark[]
+  Skill Skill[]
+  Subscription Subscription[]
+  PaymentMethod PaymentMethod[]
+  Invoice Invoice[]
+  Notification Notification[]
+}
+
+enum Experience {
+  JUNIOR
+  MID
+  SENIOR
+}
+
+enum ProjectType {
+  SHORT_TERM
+  LONG_TERM
+}
+
+model Language {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  name   String // French, English, etc.
+  level  String // Fluent, Intermediate, etc.
+}
+
+model LinkedAccount {
+  id       String @id @default(uuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  platform String // GitHub, LinkedIn
+  url      String
 }
 
 enum Role {
@@ -56,6 +107,10 @@ model Job {
   payments          Payment[]
 
   @@map("jobs")
+  Report Report[]
+  Bookmark Bookmark[]
+  Category Category[]
+  Tag Tag[]
 }
 
 enum JobStatus {
@@ -118,4 +173,126 @@ model Review {
   createdAt    DateTime @default(now())
 
   @@map("reviews")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  senderId       String
+  sender         User         @relation("SenderMessages", fields: [senderId], references: [id])
+  receiverId     String
+  receiver       User         @relation("ReceiverMessages", fields: [receiverId], references: [id])
+  content        String
+  read           Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+}
+
+model Notification {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  type           NotificationType
+  message        String
+  read           Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+}
+enum NotificationType {
+  JOB_APPLICATION
+  JOB_OFFER
+  PAYMENT_RECEIVED
+  MESSAGE
+  REVIEW
+}
+model Bookmark {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  jobId          String
+  job            Job          @relation(fields: [jobId], references: [id])
+  createdAt      DateTime     @default(now())
+
+}
+model Report {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  jobId          String
+  job            Job          @relation(fields: [jobId], references: [id])
+  reason         String
+  createdAt      DateTime     @default(now())
+
+}
+model Category {
+  id             String       @id @default(uuid())
+  name           String
+  description    String?
+  jobs           Job[]
+  createdAt      DateTime     @default(now())
+
+}
+model Tag {
+  id             String       @id @default(uuid())
+  name           String
+  description    String?
+  jobs           Job[]
+  createdAt      DateTime     @default(now())
+
+}
+model Skill {
+  id             String       @id @default(uuid())
+  name           String
+  description    String?
+  freelancers    User[]
+  createdAt      DateTime     @default(now())
+
+}
+model Subscription {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  plan           SubscriptionPlan
+  startDate      DateTime     @default(now())
+  endDate        DateTime
+  status         SubscriptionStatus @default(ACTIVE)
+  createdAt      DateTime     @default(now())
+
+}
+enum SubscriptionPlan {
+  FREE
+  BASIC
+  PREMIUM
+}
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+}
+model PaymentMethod {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  type           PaymentType
+  details        String
+  createdAt      DateTime     @default(now())
+
+}
+enum PaymentType {
+  CREDIT_CARD
+  PAYPAL
+  BANK_TRANSFER
+}
+model Invoice {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  amount         Float
+  status         InvoiceStatus @default(PENDING)
+  createdAt      DateTime     @default(now())
+
+}
+enum InvoiceStatus {
+  PENDING
+  PAID
+  REFUNDED
 }

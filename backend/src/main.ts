@@ -14,6 +14,6 @@ async function bootstrap() {
     exposedHeaders: ['Authorization'], // ✅ Expose Authorization header in responses
   });
   app.use(cookieParser());
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

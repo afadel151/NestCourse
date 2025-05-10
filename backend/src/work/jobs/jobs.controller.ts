@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { JobsService } from './jobs.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/users/auth/auth.guard';
 import { User } from 'src/decorators/user.decorator';
 import { Job } from 'src/decorators/job.decorator';
 import { UUID } from 'crypto';
