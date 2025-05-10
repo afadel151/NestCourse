@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { AuthDto } from "~/dtos/auth.dto";
+import type { LoginDto } from "~/dtos/login.dto";
 import { UserRole } from "~/dtos/user.dto";
 
 interface LoginResponse {
@@ -24,14 +25,13 @@ export const useAuthStore = defineStore("auth", {
         user: null
     }),
     actions: {
-        async authenticateUser({ email, password, role }: AuthDto) {
-            const {data}: any = await useFetch<LoginResponse>("http://localhost:3333/auth/login", {
+        async authenticateUser({ email, password }: LoginDto) {
+            const {data}: any = await useFetch<LoginResponse>("http://localhost:3001/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: {
                     email,
                     password,
-                    role
                 }
             }).catch((err) => {
                 console.log(err);
@@ -73,7 +73,7 @@ export const useAuthStore = defineStore("auth", {
             }
         },
         async signUpUser({ email, password,role }: AuthDto) {
-            const {data}: any = await useFetch<LoginResponse>("http://localhost:3333/auth/signup", {
+            const {data}: any = await useFetch<LoginResponse>("http://localhost:3001/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: {

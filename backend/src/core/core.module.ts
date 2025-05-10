@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AlgoliaService } from './algolia.service';
-import { PrismaService } from './prisma.service';
-import { RedisService } from './redis.service';
+import { AlgoliaService } from './algolia/algolia.service';
+import { PrismaService } from './prisma/prisma.service';
+import { RedisService } from './redis/redis.service';
 
 @Module({
     providers:[AlgoliaService,PrismaService,RedisService],

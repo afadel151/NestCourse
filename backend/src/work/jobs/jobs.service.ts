@@ -1,5 +1,5 @@
 import {  Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/core/prisma.service';
+import { PrismaService } from 'src/core/prisma/prisma.service';
 
 import { JobStatus } from '@prisma/client';
 import { AlgoliaService } from '../core/algolia.service';

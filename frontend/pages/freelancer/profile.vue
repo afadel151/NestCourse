@@ -60,13 +60,9 @@ const isSubmitting = ref(false)
 const { handleSubmit } = useForm({
     validationSchema: new UserDto()
 })
-
-// Computed property for avatar fallback
 const getInitials = computed(() => {
     return `${fetchedUser.value.firstName[0]}${fetchedUser.value.lastName[0]}`
 })
-
-// Skills management
 const addSkill = () => {
     const skill = skillInput.value.trim()
     if (skill && !form.value.skills.includes(skill)) {
@@ -78,8 +74,6 @@ const addSkill = () => {
 const removeSkill = (skillToRemove: string) => {
     form.value.skills = form.value.skills.filter(skill => skill !== skillToRemove)
 }
-
-// Form submission
 const onSubmit = handleSubmit(async (values) => {
     try {
         isSubmitting.value = true;
@@ -98,13 +92,10 @@ const onSubmit = handleSubmit(async (values) => {
     }
 })
 
-// Logout function
 const logout = () => {
     authStore.logUserOut();
     router.push('/login');
 }
-
-// Delete account function
 const deleteAccount = async () => {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
         try {

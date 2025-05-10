@@ -2,7 +2,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const token = useCookie("jwt_token"); // Retrieve token from cookies
 
   const api = $fetch.create({
-    baseURL: "http://localhost:3333",
+    baseURL: "http://localhost:3001",
     credentials: "include",
 
     async onRequest({ options }) {

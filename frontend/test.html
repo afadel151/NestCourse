@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Todo app</h1>
+        <form id="todo-form" >
+            <input type="text" id="todo-input" placeholder="Enter a new todo">
+            <button type="submit">Add Todo</button>
+        </form>
+        <ul id="todo-list"></ul>
+    </div>
+    <script>
+        const form = document.getElementById('todo-form');
+        const input = document.getElementById('todo-input');
+        const todoList = document.getElementById('todo-list');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const todoText = input.value.trim();
+            if (todoText) {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name= 'todo';
+                li.appendChild(checkbox);
+                checkbox.addEventListener('change', function() {
+                    if (checkbox.checked) {
+                        li.style.textDecoration = 'line-through';
+                    } else {
+                        li.style.textDecoration = 'none';
+                    }
+                });
+                const text = document.createTextNode(todoText);
+                li.appendChild(text);
+                todoList.appendChild(li);
+                input.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { AlgoliaService } from '../core/algolia.service';
+import { AlgoliaService } from '../core/algolia/algolia.service';
 
 import { ApplicationsService } from './applications/applications.service';
 import { ApplicationsController } from './applications/applications.controller';
