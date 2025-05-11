@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/users/auth/auth.guard';
 import { User } from 'src/decorators/user.decorator';
 import { ApplicationsService } from './applications.service';
@@ -15,4 +15,10 @@ export class ApplicationsController {
     getRecentApplications(@User() user: any) {
         return this.applicationService.getRecentApplications(user);
     }
+
+    @Post()
+    addApplication(){}
+
+    @Get()
+    getApplication(){}
 }

@@ -18,6 +18,7 @@ export class UsersController {
     deleteProfile(@User() user: any){
         return this.UserService.deleteAccount(user)
     }
+    
     @Get('details')
     getUserDetails(@User() user: any)
     {
