@@ -11,4 +11,6 @@ import { JobsService } from './jobs/jobs.service';
   controllers: [JobsController,ApplicationsController],
   providers: [JobsService,AlgoliaService,ApplicationsService]
 })
-export class JobsModule {}
+export class WorkModule {
+    
+}
